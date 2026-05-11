@@ -22,7 +22,7 @@ connectDB();
 app.use("/uploads", express.static(path.join(__dirname, "uploads")));
 
 const allowedOrigins = [
-  "https://volt-ride-hazel.vercel.app",
+  "https://volt-ride-neon.vercel.app",
   "http://localhost:5173",
 ];
 
