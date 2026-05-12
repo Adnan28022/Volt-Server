@@ -44,11 +44,21 @@ exports.getAllRides = async (req, res) => {
 };
 
 // 2. Get User's Ride History (Mobile/User Profile ke liye)
+// 2. Get User's Ride History
 exports.getUserRides = async (req, res) => {
   try {
     const { userId } = req.params;
     const rides = await Ride.find({ userId })
-      .populate("bikeId", "registration_number brand image")
+      .populate({
+        path: "userId",
+        select: "name email phone",  // ✅ name email add kiya
+        model: User
+      })
+      .populate({
+        path: "bikeId",
+        select: "registration_number model_name brand image price_per_hour",  // ✅ model_name add kiya
+        model: Bike
+      })
       .populate("startStationId endStationId", "name")
       .sort({ createdAt: -1 });
 
