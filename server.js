@@ -14,6 +14,7 @@ const bikeRoutes = require("./routes/Bike");
 const stationRoutes = require("./routes/Stations");
 const rideRoutes = require("./routes/Ride");
 const paymentRoutes = require("./routes/Payment");
+const reviewRoutes = require("./routes/Review")
 
 const app = express();
 
@@ -48,6 +49,7 @@ app.use("/api/bikes", bikeRoutes);
 app.use("/api/stations", stationRoutes);
 app.use("/api/rides", rideRoutes);
 app.use("/api/payment", paymentRoutes);
+app.use("/api/reviews", reviewRoutes)
 
 app.get("/", (req, res) => {
   res.json({
