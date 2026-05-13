@@ -107,10 +107,10 @@ exports.login = async (req, res) => {
 
     // Store in Cookie
     res.cookie("token", token, {
-      httpOnly: true, // XSS attacks se bachne ke liye
-      secure: process.env.NODE_ENV === "production", // Sirf HTTPS par chalega production mein
-      sameSite: "strict",
-      maxAge: 24 * 60 * 60 * 1000, // 1 Din
+      httpOnly: true,
+      secure: true,           // ✅ HTTPS ke liye zaroori
+      sameSite: "none",       // ✅ Cross-origin allow karta hai
+      maxAge: 24 * 60 * 60 * 1000,
     });
 
     res.status(200).json({
@@ -163,6 +163,8 @@ exports.logout = (req, res) => {
   res.cookie("token", "", {
     expires: new Date(0),
     httpOnly: true,
+    secure: true,
+    sameSite: "none",
   });
   res.status(200).json({ success: true, message: "Logged out successfully" });
 };
