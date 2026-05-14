@@ -71,7 +71,7 @@ exports.register = async (req, res) => {
             </div>
             <div class="content">
                 <h1>Verify Your Identity</h1>
-                <p>Welcome to the future of mobility! Volt-Ride family ka hissa ban'ne ke liye bas ek aakhri step baki hai. Neeche diya gaya code enter karke apna account verify karein:</p>
+                <p>Welcome to the future of mobility! You're just one last step away from joining the Volt-Ride family. Please enter the code below to verify your account.:</p>
                 
                 <div class="otp-card">
                     <span class="otp-label">Verification Code</span>
