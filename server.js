@@ -54,7 +54,7 @@ app.use("/api/reviews", reviewRoutes)
 app.get("/", (req, res) => {
   res.json({
     success: true,
-    message: "Server running fine 🚀",
+    message: "Server running fine 🚀, With Mongo Change.",
   });
 });
 
