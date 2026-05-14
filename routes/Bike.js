@@ -21,7 +21,12 @@ const storage = multer.diskStorage({
 const upload = multer({ storage });
 
 // API Endpoints
-router.post("/add", upload.single("image"), addBike);
+// routes/bikeRoutes.js
+router.post("/add", upload.single("image"), (req, res, next) => {
+  console.log("File received:", req.file); // Agar ye console nahi aa raha, to Multer mein error hai
+  console.log("Body received:", req.body); // Agar ye empty hai, to frontend se data nahi aa raha
+  next();
+}, addBike);
 router.get("/all", getAllBikes);
 router.get("/:id", getBikeById);
 router.put("/update/:id", upload.single("image"), updateBike);
