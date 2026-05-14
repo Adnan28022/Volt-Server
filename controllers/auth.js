@@ -38,8 +38,60 @@ exports.register = async (req, res) => {
     await transporter.sendMail({
       from: `"Volt-Ride" <${process.env.EMAIL}>`,
       to: email,
-      subject: "Email Verification OTP",
-      text: `Your OTP for Volt-X is ${otp}. It will expire in 10 minutes.`,
+      subject: "Welcome to Volt-Ride! Verify Your Account",
+      text: `Your OTP for account verification is ${otp}. It will expire in 10 minutes.`,
+      html: `
+    <!DOCTYPE html>
+    <html>
+    <head>
+        <meta charset="UTF-8">
+        <style>
+            body { font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif; margin: 0; padding: 0; background-color: #f0fdf4; }
+            .container { max-width: 600px; margin: 30px auto; background: #ffffff; border-radius: 24px; overflow: hidden; box-shadow: 0 20px 40px rgba(0,0,0,0.08); border: 1px solid #dcfce7; }
+            .hero { background: linear-gradient(135deg, #064e3b 0%, #065f46 100%); padding: 50px 20px; text-align: center; position: relative; }
+            .logo { font-size: 32px; font-weight: 900; color: #10b981; font-style: italic; text-transform: uppercase; letter-spacing: -1px; margin-bottom: 10px; }
+            .welcome-badge { background: rgba(16, 185, 129, 0.2); color: #34d399; font-size: 10px; font-weight: 800; padding: 5px 15px; border-radius: 20px; text-transform: uppercase; letter-spacing: 2px; display: inline-block; }
+            .content { padding: 40px; text-align: center; }
+            h1 { font-size: 24px; font-weight: 800; color: #0f172a; margin-bottom: 15px; }
+            p { font-size: 15px; line-height: 1.6; color: #475569; margin-bottom: 30px; }
+            .otp-card { background: #ffffff; border: 2px solid #f1f5f9; padding: 25px; border-radius: 20px; box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.05); display: inline-block; min-width: 250px; }
+            .otp-label { font-size: 10px; font-weight: 900; color: #94a3b8; text-transform: uppercase; letter-spacing: 2px; margin-bottom: 10px; display: block; }
+            .otp-code { font-size: 42px; font-weight: 900; color: #059669; letter-spacing: 12px; margin-left: 12px; /* For centering spaced digits */ }
+            .benefits { margin-top: 35px; border-top: 1px solid #f1f5f9; padding-top: 25px; display: flex; justify-content: center; gap: 20px; }
+            .benefit-item { font-size: 12px; color: #64748b; font-weight: 600; }
+            .footer { background: #f8fafc; padding: 25px; text-align: center; font-size: 11px; color: #94a3b8; line-height: 1.8; }
+            .highlight { color: #059669; font-weight: bold; }
+        </style>
+    </head>
+    <body>
+        <div class="container">
+            <div class="hero">
+                <div class="logo">VOLT-RIDE</div>
+                <div class="welcome-badge">New Member Registration</div>
+            </div>
+            <div class="content">
+                <h1>Verify Your Identity</h1>
+                <p>Welcome to the future of mobility! Volt-Ride family ka hissa ban'ne ke liye bas ek aakhri step baki hai. Neeche diya gaya code enter karke apna account verify karein:</p>
+                
+                <div class="otp-card">
+                    <span class="otp-label">Verification Code</span>
+                    <div class="otp-code">${otp}</div>
+                </div>
+
+                <div class="benefits">
+                    <span class="benefit-item">⚡ Fast Rides</span>
+                    <span class="benefit-item">🛡️ Secure Travel</span>
+                    <span class="benefit-item">🌱 Eco Friendly</span>
+                </div>
+            </div>
+            <div class="footer">
+                Aap ye email isliye dekh rahe hain kyunki aapne <strong>Volt-Ride</strong> par register kiya hai.<br/>
+                &copy; 2026 Volt-Ride Inc. | Gujranwala, Pakistan.
+            </div>
+        </div>
+    </body>
+    </html>
+  `,
     });
 
     res
@@ -146,10 +198,56 @@ exports.resendOTP = async (req, res) => {
     await user.save();
 
     await transporter.sendMail({
-      from: process.env.EMAIL,
+      from: `"Volt-Ride" <${process.env.EMAIL}>`,
       to: email,
-      subject: "Resend OTP",
-      text: `Your OTP is ${otp}`,
+      subject: "Your New OTP - Volt-Ride",
+      text: `Your new OTP is ${otp}. It will expire in 10 minutes.`,
+      html: `
+    <!DOCTYPE html>
+    <html>
+    <head>
+        <meta charset="UTF-8">
+        <style>
+            body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; margin: 0; padding: 0; background-color: #f9fafb; }
+            .wrapper { width: 100%; table-layout: fixed; background-color: #f9fafb; padding-bottom: 40px; }
+            .main { max-width: 600px; margin: 0 auto; background-color: #ffffff; border-radius: 24px; overflow: hidden; margin-top: 40px; box-shadow: 0 10px 25px rgba(0,0,0,0.03); }
+            .header { background-color: #022c22; padding: 30px; text-align: center; }
+            .brand { font-size: 24px; font-weight: 900; color: #10b981; font-style: italic; text-transform: uppercase; letter-spacing: 1px; }
+            .body-content { padding: 40px; text-align: center; }
+            .icon-box { width: 60px; height: 60px; background: #ecfdf5; border-radius: 20px; display: inline-flex; align-items: center; justify-content: center; margin-bottom: 20px; font-size: 30px; line-height: 60px; }
+            h2 { color: #0f172a; font-size: 20px; font-weight: 800; text-transform: uppercase; margin: 0 0 10px 0; }
+            p { color: #64748b; font-size: 14px; margin-bottom: 30px; line-height: 1.5; }
+            .otp-badge { background-color: #f1f5f9; border: 1px solid #e2e8f0; padding: 15px 30px; border-radius: 16px; display: inline-block; }
+            .otp-text { font-size: 32px; font-weight: 900; color: #064e3b; letter-spacing: 8px; margin: 0; }
+            .footer { padding: 30px; text-align: center; font-size: 10px; color: #94a3b8; text-transform: uppercase; letter-spacing: 2px; }
+            .help-text { font-size: 12px; color: #94a3b8; margin-top: 20px; }
+        </style>
+    </head>
+    <body>
+        <div class="wrapper">
+            <div class="main">
+                <div class="header">
+                    <div class="brand">VOLT-RIDE</div>
+                </div>
+                <div class="body-content">
+                    <div class="icon-box">⚡</div>
+                    <h2>New OTP Requested</h2>
+                    <p>Aapne OTP resend karne ki request ki thi. Apna naya verification code neeche dekhein:</p>
+                    
+                    <div class="otp-badge">
+                        <div class="otp-text">${otp}</div>
+                    </div>
+
+                    <p class="help-text">Ye code 10 minutes mein expire ho jayega.<br/>Agar aapne ye request nahi ki, toh foran apna password change karein.</p>
+                </div>
+                <div class="footer">
+                    &copy; 2026 Volt-Ride | Smart & Secure Rides
+                </div>
+            </div>
+        </div>
+    </body>
+    </html>
+  `,
     });
 
     res.status(200).json({ success: true, message: "OTP resent successfully" });
