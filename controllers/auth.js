@@ -220,3 +220,56 @@ exports.deleteUser = async (req, res) => {
     });
   }
 };
+
+// ================= FORGOT PASSWORD =================
+exports.forgotPassword = async (req, res) => {
+  try {
+    const { email } = req.body;
+    const user = await User.findOne({ email });
+
+    if (!user) {
+      return res.status(404).json({ success: false, message: "User not found with this email" });
+    }
+
+    const otp = generateOTP();
+    user.otp = otp;
+    user.otpExpire = Date.now() + 10 * 60 * 1000; // 10 mins valid
+    await user.save();
+
+    await transporter.sendMail({
+      from: `"Volt-Ride" <${process.env.EMAIL}>`,
+      to: email,
+      subject: "Password Reset OTP",
+      text: `Your OTP for password reset is ${otp}. It will expire in 10 minutes.`,
+    });
+
+    res.status(200).json({ success: true, message: "OTP sent to your email" });
+  } catch (error) {
+    res.status(500).json({ success: false, message: error.message });
+  }
+};
+
+// ================= RESET PASSWORD =================
+exports.resetPassword = async (req, res) => {
+  try {
+    const { email, otp, newPassword } = req.body;
+
+    const user = await User.findOne({ email });
+
+    if (!user) return res.status(404).json({ message: "User not found" });
+
+    // OTP Check
+    if (user.otp !== otp) return res.status(400).json({ message: "Invalid OTP" });
+    if (user.otpExpire < Date.now()) return res.status(400).json({ message: "OTP expired" });
+
+    // Update Password
+    user.password = newPassword; // model.pre("save") automatic hash kar dega
+    user.otp = undefined;
+    user.otpExpire = undefined;
+    await user.save();
+
+    res.status(200).json({ success: true, message: "Password reset successful! You can now login." });
+  } catch (error) {
+    res.status(500).json({ message: error.message });
+  }
+};

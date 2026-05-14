@@ -9,6 +9,8 @@ const {
   verifyOTP,
   resendOTP,
   getAllUsers,
+  forgotPassword,
+  resetPassword,
   deleteUser,
 } = require("../controllers/auth");
 
@@ -22,7 +24,8 @@ router.post("/verify-otp", verifyOTP);
 router.post("/resend-otp", resendOTP);
 router.post("/login", login);
 router.get("/logout", logout);
-
+router.post("/forgot-password", forgotPassword);
+router.post("/reset-password", resetPassword);
 router.get("/users", isAuthenticated, getAllUsers);
 router.delete("/user/:id", isAuthenticated, deleteUser);
 
