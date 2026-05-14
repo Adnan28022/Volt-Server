@@ -239,8 +239,51 @@ exports.forgotPassword = async (req, res) => {
     await transporter.sendMail({
       from: `"Volt-Ride" <${process.env.EMAIL}>`,
       to: email,
-      subject: "Password Reset OTP",
+      subject: "Password Reset OTP - Volt-Ride",
       text: `Your OTP for password reset is ${otp}. It will expire in 10 minutes.`,
+      html: `
+    <!DOCTYPE html>
+    <html>
+    <head>
+        <meta charset="UTF-8">
+        <style>
+            body { font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif; margin: 0; padding: 0; background-color: #f4f4f4; }
+            .container { max-width: 600px; margin: 20px auto; background: #ffffff; border-radius: 16px; overflow: hidden; box-shadow: 0 4px 15px rgba(0,0,0,0.05); }
+            .header { background-color: #064e3b; padding: 40px 20px; text-align: center; }
+            .logo { font-size: 28px; font-weight: 900; color: #10b981; font-style: italic; text-transform: uppercase; letter-spacing: -1px; }
+            .content { padding: 40px; text-align: center; color: #334155; }
+            h1 { font-size: 22px; font-weight: 800; text-transform: uppercase; margin-bottom: 10px; color: #0f172a; }
+            p { font-size: 14px; line-height: 1.6; color: #64748b; margin-bottom: 30px; }
+            .otp-container { background: #f8fafc; border: 2px dashed #e2e8f0; padding: 20px; border-radius: 12px; display: inline-block; margin-bottom: 30px; }
+            .otp-code { font-size: 36px; font-weight: 900; color: #059669; letter-spacing: 10px; margin: 0; }
+            .footer { background: #f8fafc; padding: 20px; text-align: center; font-size: 11px; color: #94a3b8; text-transform: uppercase; letter-spacing: 1px; }
+            .warning { font-size: 12px; color: #ef4444; font-weight: bold; margin-top: 20px; }
+        </style>
+    </head>
+    <body>
+        <div class="container">
+            <div class="header">
+                <div class="logo">VOLT-RIDE</div>
+            </div>
+            <div class="content">
+                <h1>Reset Your Access</h1>
+                <p>Humne aapke password reset ki request receive ki hai. Neeche diya gaya OTP code use karein:</p>
+                
+                <div class="otp-container">
+                    <div class="otp-code">${otp}</div>
+                </div>
+
+                <p>Ye code sirf <strong>10 minutes</strong> ke liye valid hai. Agar aapne ye request nahi ki, toh is email ko ignore karein.</p>
+                
+                <div class="warning">Security Warning: Kisi ke sath bhi apna OTP share na karein.</div>
+            </div>
+            <div class="footer">
+                &copy; 2026 Volt-Ride Inc. | Secure Mobility Solutions
+            </div>
+        </div>
+    </body>
+    </html>
+  `,
     });
 
     res.status(200).json({ success: true, message: "OTP sent to your email" });
