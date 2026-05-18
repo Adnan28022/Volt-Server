@@ -25,6 +25,8 @@ app.use("/uploads", express.static(path.join(__dirname, "uploads")));
 const allowedOrigins = [
   "https://volt-ride-chi.vercel.app/",
   "http://localhost:5173",
+  "https://volt-ride-git-main-m-adnans-projects.vercel.app/",
+  "https://volt-ride-jf9022pzp-m-adnans-projects.vercel.app/"
 ];
 
 app.use(
