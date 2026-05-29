@@ -18,6 +18,7 @@ const reviewRoutes = require("./routes/Review")
 
 const app = express();
 
+app.set("trust proxy", 1);
 connectDB();
 
 app.use("/uploads", express.static(path.join(__dirname, "uploads")));
