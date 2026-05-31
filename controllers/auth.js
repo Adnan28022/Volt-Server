@@ -128,47 +128,40 @@ exports.verifyOTP = async (req, res) => {
 };
 
 // ================= LOGIN =================
+// ================= LOGIN (Updated for Vercel) =================
 exports.login = async (req, res) => {
   try {
     const { email, password } = req.body;
     const user = await User.findOne({ email });
 
     if (!user)
-      return res
-        .status(404)
-        .json({ success: false, message: "User not found" });
+      return res.status(404).json({ success: false, message: "User not found" });
+
     if (!user.isVerified)
-      return res
-        .status(400)
-        .json({ success: false, message: "Please verify email first" });
+      return res.status(400).json({ success: false, message: "Please verify email first" });
 
     const isMatch = await bcrypt.compare(password, user.password);
     if (!isMatch)
-      return res
-        .status(400)
-        .json({ success: false, message: "Invalid credentials" });
+      return res.status(400).json({ success: false, message: "Invalid credentials" });
 
-    // Create Token
     const token = jwt.sign(
       { id: user._id, role: user.role },
       process.env.JWT_SECRET,
-      {
-        expiresIn: "1d",
-      },
+      { expiresIn: "1d" }
     );
 
-    // Store in Cookie
+    // ✅ FIXED FOR VERCEL: sameSite "none" and secure "true" is mandatory
     res.cookie("token", token, {
       httpOnly: true,
-      secure: true,
-      sameSite: "none",
+      secure: true,      // Must be true for HTTPS (Vercel)
+      sameSite: "none",  // Must be "none" for cross-domain requests
       maxAge: 24 * 60 * 60 * 1000,
     });
 
     res.status(200).json({
       success: true,
       message: `Welcome back ${user.name}`,
-      token, // Frontend ke liye bhi bhej rahe hain
+      token,
       user: {
         id: user._id,
         name: user.name,
@@ -261,8 +254,6 @@ exports.logout = (req, res) => {
   res.cookie("token", "", {
     expires: new Date(0),
     httpOnly: true,
-    secure: true,
-    sameSite: "none",
   });
   res.status(200).json({ success: true, message: "Logged out successfully" });
 };
