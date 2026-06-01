@@ -159,10 +159,9 @@ exports.login = async (req, res) => {
 
     // Store in Cookie
     res.cookie("token", token, {
-      httpOnly: true,
-      secure: true,
+      httpOnly: true, // XSS attacks se bachne ke liye
       secure: process.env.NODE_ENV === "production", // Sirf HTTPS par chalega production mein
-      sameSite: "none",
+      sameSite: "strict",
       maxAge: 24 * 60 * 60 * 1000, // 1 Din
     });
 
