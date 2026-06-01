@@ -17,16 +17,14 @@ const paymentRoutes = require("./routes/Payment");
 const reviewRoutes = require("./routes/Review")
 
 const app = express();
-
+app.set("trust proxy", 1);
 connectDB();
 
 app.use("/uploads", express.static(path.join(__dirname, "uploads")));
 
 const allowedOrigins = [
   "https://volt-ride-chi.vercel.app",
-  "http://localhost:5173",
-  "https://volt-ride-git-main-m-adnans-projects.vercel.app",
-  "https://volt-ride-jf9022pzp-m-adnans-projects.vercel.app"
+  "http://localhost:5173"
 ];
 
 app.use(
