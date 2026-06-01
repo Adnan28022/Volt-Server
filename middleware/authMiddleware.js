@@ -1,7 +1,11 @@
 const jwt = require("jsonwebtoken");
 
 exports.isAuthenticated = (req, res, next) => {
-  const token = req.cookies.token;
+  const token = req.cookies.token || req.headers.authorization?.split(" ")[1];
+  // Agar cookie nahi mil rahi to check karein kya header mein token hai?
+
+  console.log("Cookies found:", req.cookies); // Vercel logs mein check karein
+
   if (!token) return res.status(401).json({ message: "Please login first" });
 
   try {
@@ -9,6 +13,6 @@ exports.isAuthenticated = (req, res, next) => {
     req.userId = decoded.id;
     next();
   } catch (error) {
-    res.status(401).json({ message: "Invalid token" });
+    return res.status(401).json({ message: "Invalid token" });
   }
 };
